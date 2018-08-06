@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Etiquetador</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+     
+ 
+    <!--<link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="jumbotron-narrow.css" rel="stylesheet">-->
+    
+    <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet" type= "text/css">
+   
+    
+    <script type="text/javascript">
+        $(function() {
+                $('#jsonB').click(function() {
+                    $.ajax({
+                        url: '/prueba',
+                        type: 'POST',
+                        success: function(response) {
+                        window.location.href = response;
+                           // console.log(response);
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                });
+            });
+    </script>
+ 
+</head>
+ 
+<body>
+    <div class="container">
+        <div class="etiquetador">
+            <h1 class="text-muted titleEt">ETIQUETADOR</h1>
+            <div class="botones">
+                <form>
+                    <button id="jsonB" type="button" class="btn btn-primary boton1">Crear JSON
+                    </button>
+                    <button id="etiB" type="button" class="btn btn-primary">Etiquetar
+                    </button>
+                </form>
+            </div>
+        <footer class="footer">
+            <p>&copy; CIC IPN</p>
+        </footer>
+        </div>
+    </div>
+    
+    
+
+</body>
+ 
+</html>

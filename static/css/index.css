@@ -1,0 +1,57 @@
+body
+    {
+        background-image:url('../images/Free-Desk-Pictures.jpg');
+        -webkit-background-size: cover ;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+.prueba
+    {
+        margin: 10px;
+        color: red;
+    }
+
+.etiquetador
+    {
+        background-color: rgba(0,0,0,0.6);
+        width: 100%;
+        height: auto;
+        /*margin:auto!important;*/
+        margin-top: 10% !important;
+        position: fixed;
+        /*vertical-align: middle!important;*/
+        text-align: center;
+    }   
+
+.container
+    {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        padding: 0;
+      /*  position: fixed;*/
+    }
+
+.footer
+    {
+        color:white;
+        margin-top: 3% !important;
+    }
+
+.titleEt
+    {
+        color:white !important;
+    }
+
+.botones
+    {
+        margin-top: 3%;
+    }
+
+.boton1
+    {
+        margin-right: 10%;
+    }   
