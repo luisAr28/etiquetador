@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Tag</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+
+
+
+</head>
+	<body>
+<form>
+		{%for question in range(0,questions) %}
+				Pregunta <input type="text" name="q{{loop.index}}">
+				Tipo <select id="tipo">
+						<option value="radio">Radio button</option>
+						<option value="texto">Texto</option>
+						<option value="combo">Combobox</option>
+						<option value="check">Checkbox</option>
+					 </select>
+				<div class="opcs" id="optns">Ingresa el número de opciones<input type="number" name="opcIn" min="1"><br>
+				<button id="bOpt">OK</button>
+				</div>
+				Campo adicional para texto <input type="checkbox" name="chText">
+			{% endfor %}
+
+</form>
+	</body>
+</html>

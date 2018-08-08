@@ -1,4 +1,4 @@
-from flask import Flask, render_template,jsonify,request,redirect,url_for
+from flask import Flask, render_template,jsonify,request,redirect,url_for,json
 app = Flask(__name__)
 
 @app.route('/')
@@ -32,11 +32,21 @@ def signF():
 	print(_ordAlet)
 
 	if _name and _ruta and _nImags and _nQuest:
-		return render_template('tag.html',_name=_name,_ruta=_name,_nImags=_nImags,_nQuest=_nQuest,_ordAlet=_ordAlet,questions=_nQuest);
+		return json.dumps	({'pag':'tag.html','_name':_name,'_ruta':_name,'_nImags':_nImags,'_nQuest':_nQuest,'_ordAlet':_ordAlet,'questions':_nQuest});
+		#return render_template("tag.html",'_name':_name,'_ruta':_name,'_nImags':_nImags,'_nQuest':_nQuest,'_ordAlet':_ordAlet,'questions':_nQuest);
 	    #return json.dumps({'html':'<span>All fields good !!</span>'})
 	else:
 		return json.dumps({'html':'<span>Faltan !!</span>'})
 
+@app.route("/ejemplo",methods=['POST'])
+def ejemplo():
+	questions = int(request.form.get('nQuest'))
+	print(questions)
+	return render_template('tag.html',questions=questions)
+
+@app.route("/saveJson",methods=['POST'])
+def saveJson():
+    print("Si")
 
 @app.route('/tagging')
 def tagging():
