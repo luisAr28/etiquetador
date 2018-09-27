@@ -21,3 +21,10 @@
 #jform fieldset:not(:first-of-type) {
 	display: none;
 }
+
+.contadorQ{
+    float:right !important;
+    /*text-align: right;
+    position: relative !important;*/
+    width: auto !important;
+}

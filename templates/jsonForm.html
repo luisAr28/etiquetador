@@ -78,6 +78,8 @@
                 //this comes from the custom easing plugin
                 easing: 'easeInOutBack'
             });
+            
+            $('html, body').animate({scrollTop:0}, 'slow');
         });   
         });
         
@@ -131,8 +133,12 @@
             <input type="hidden" name="path" value="{{y['path']}}">
             {% set numberQ = y['numtags'] | int %}
             {% set indQuest = [] %}
+            {% set qPerIm = [] %}
+            <input type="hidden" name="cantidad" value="{{numberQ}}">
+
             {% for rep in range(0,numberQ) %}
             <fieldset>
+                <div class="contadorQ float-right">{{rep+1}} de {{numberQ}}</div>
                 <img src="{{ url_for('static', filename=hists[rep]) }}">
                 <input type="hidden" name="img{{rep+1}}" value="{{hists[rep]}}">
                 {% for a,b in y['tags'].items() %}
@@ -164,22 +170,27 @@
                     {% endif %}
                 {% endfor %}
                 {% if rep == numberQ-1 %}
-                        <input type="hidden" name="cantidad" value="{{numberQ}}">
-                        <input type="hidden" name="preguntas" value="{{indQuest|count}}">
+                        
+                        
                         <input type="button" name="previous" class="previous" value="Anterior" />
-                        <input type="submit" id="finForm" name="submit" class="submit" value="Finalizar" />
+                        
                 {% elif rep == 0 %}
+                    
+                    <input type="hidden" name="preguntas" value="{{indQuest|count}}">
                     <input type="button" name="next" class="next" value="Siguiente" />
-                    <input type="submit" id="finForm" name="submit" class="submit" value="Finalizar" />
                 {% else %}
+                    
+                    
                     <input type="button" name="previous" class="previous" value="Anterior" />
                     <input type="button" name="next" class="next" value="Siguiente" />
-                    <input type="submit" id="finForm" name="submit" class="submit" value="Finalizar" />
+                    
                 {% endif %}
+
                 </fieldset>
-               
             {% endfor %}
         {% endfor %}
+        
+        <input type="submit" id="finForm" name="submit" class="submit" value="Finalizar" />
         </form>
     </body>
 </html>

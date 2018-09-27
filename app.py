@@ -75,9 +75,9 @@ def saveJson():
     otro = str()
     otro = otro+complete
    
-    print(complete)
-    print(dat)
-    print(otro)
+    #print(complete)
+    #print(dat)
+    #print(otro)
    
    #createfolder = os.path.join('C:/Users/MyUser/Desktop/Project/', 'Fileuploads/', time_stamp,)
     #filename = request.form.get('nombre')
@@ -110,8 +110,8 @@ def jForm():
     #      r=random.randint(1,100)
     #      if r not in list: list.append(r)
             
-    print('\n'+jsonInfo)
-    print(jsonInfo2['category1']['name'])
+    #print('\n'+jsonInfo)
+    #print(jsonInfo2['category1']['name'])
     
     return render_template('jsonForm.html',jsonInfo2=jsonInfo2,hists=hists)
 
@@ -125,28 +125,33 @@ def jsonDat():
     dat = request.form
     #dat = dict(request.form)
    # print(dato)
-    print(dat)
-    print(prueba)
+    #print(dat)
+    #print(prueba)
     
     dataJ = "{"
     
-    topQuest = request.form.get('preguntas',type=int)
-
     totalIm = request.form.get('cantidad',type=int)
+    topQuest = totalIm*request.form.get('preguntas',type=int)
+    #print(topQuest)
 
     questPerIm =  topQuest / totalIm
     contIm = 1
     contClass =1
 
-    dataJ = dataJ+obtieneNomImag(str(request.form.get('img'+str(contIm))))+":[{"
+    dataJ = dataJ+'"'+obtieneNomImag(str(request.form.get('img'+str(contIm))))+'"'+":[{"
 
     for i in range(0,topQuest):
-        dataJ = dataJ + "Classname"+str(contClass)+":{opt:"+ str(request.form.get('opt'+str(i+1)))+",text:"+str(request.form.get('text'+str(i+1)))+"}"
+        dataJ = dataJ +'"'+ "Classname"+str(contClass)+'":{"opt":"' 
+        reqOpt = str(request.form.get('opt'+str(i+1)))
+        if reqOpt != 'None':
+            dataJ = dataJ+reqOpt
+        
+        dataJ=dataJ+'","text":"'+str(request.form.get('text'+str(i+1)))+'"}'
 
         if (i+1)==(contIm*questPerIm) and (i+1)!=topQuest:      
             contIm+=1
             contClass=1
-            dataJ=dataJ+"}],"+obtieneNomImag(str(request.form.get('img'+str(contIm))))+":[{"
+            dataJ=dataJ+"}],"+'"'+obtieneNomImag(str(request.form.get('img'+str(contIm))))+'":[{'
         else:
             if (i+1)!=topQuest:
                 dataJ=dataJ+","
@@ -156,9 +161,9 @@ def jsonDat():
    # for i in range(request.form.get('numberQ')):
     #    dataJ = dataJ + request.form.get('img{i+1}')
     
-    dataJ = dataJ+"}}"
+    dataJ = dataJ+"}]}"
     
-    print("Es: "+dataJ)
+    #print("Es: "+dataJ)
     
     pathName = obtieneNomImag(str(request.form.get('path')))
     pathFile = "static/temp/"+pathName+".json"
@@ -202,6 +207,10 @@ def obtieneNomImag(rutIm):
     nom = rutIm[index+1:]
     
     return nom
+
+@app.route('/favicon.ico') 
+def favicon(): 
+    return send_from_directory(os.path.join(app.static_folder,'/images/'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
     
 if __name__=="__main__":
-    app.run(debug = True)
+    app.run(host="0.0.0.0", debug=True, port=5000)
