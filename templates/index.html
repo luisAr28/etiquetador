@@ -29,6 +29,23 @@
                     });
                 });
             });
+        
+        
+        $(function() {
+                $('#etiB').click(function() {
+                    $.ajax({
+                        url: '/etiquetado',
+                        type: 'POST',
+                        success: function(response) {
+                        window.location.href = response;
+                           // console.log(response);
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                });
+            });
     </script>
  
 </head>
@@ -39,7 +56,7 @@
             <h1 class="text-muted titleEt">ETIQUETADOR</h1>
             <div class="botones">
                 <form>
-                    <button id="jsonB" type="button" class="btn btn-primary boton1">Crear JSON
+                    <button id="jsonB" type="button" class="btn btn-primary boton1" disabled>Crear JSON
                     </button>
                     <button id="etiB" type="button" class="btn btn-primary">Etiquetar
                     </button>

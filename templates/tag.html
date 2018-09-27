@@ -11,7 +11,7 @@
     $('#btn').click(function() {
 		 
 		        $.ajax({
-		            url: '/ejemplo',
+		            url: '/fillF',
 		            data: $('form').serialize(),
 		            type: 'POST',
 		            dataType:'JSON',
@@ -62,31 +62,14 @@
 </head>
 <body>
     <body>
-		<form method="POST" action="ejemplo">
-			Ingresa el nombre de tu categoria <input type="text" name="nombre"> <br>
-			Ingresa la ruta en donde se alojarán tus imágenes <input type="text" name="ruta"> <br>
-			Número máximo de imágenes a mostrar <input type="number" name="nImags" min="1"> <br>
-			Ingresa el número de preguntas <input type="number" name="nQuest" min="1"> <br>
+		<form method="POST" action="fillF">
+			Ingresa el nombre de tu categoria <input type="text" name="nombre" required> <br>
+			Ingresa la ruta en donde se alojarán tus imágenes <input type="text" name="ruta" required> <br>
+			Número máximo de imágenes a mostrar <input type="number" name="nImags" min="1" required> <br>
+			Ingresa el número de preguntas <input type="number" name="nQuest" min="1" required> <br>
 			Orden aleatorio <input type="checkbox" name="ordAlet"> <br>
 		<!--	<button type="button" name="" id="btn" value="Click">Ok </button>-->
 		<input type="submit" name="" value="Ok"><br>
-		{% if questions %}	
-			{%for question in range(0,questions) %}
-				<br><br>
-				Pregunta <input type="text" name="q{{loop.index}}"><br>
-				Tipo <select id="tipo">
-						<option value="texto">Radio button</option>
-						<option value="radio">Texto</option>
-						<option value="combo">Combobox</option>
-						<option value="check">Checkbox</option>
-					 </select><br>
-				<div class="opcs" id="optns">Ingresa el número de opciones<input type="number" name="opcIn" min="1"><br>
-				<button id="bOpt">OK</button><br>
-				</div>
-				Campo adicional para texto <input type="checkbox" name="chText"><br>
-			{% endfor %}
-            <br><button type="button" id="sJson">Guardar JSON</button>
-		{%endif%}
 		</form>
 	</body>
     
