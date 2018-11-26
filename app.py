@@ -28,6 +28,9 @@ def prueba():
 def etiquetado():
     return "/loadTag"
 
+@app.route('/etiquetadoCon',methods=['POST'])
+def etiquetadoCon():
+    return "/continueTag"
 
 @app.route("/reqF",methods=['POST'])
 def signF():
@@ -93,6 +96,10 @@ def tagging():
 @app.route('/loadTag')
 def loadTag():
        return render_template('lTag.html')
+        
+@app.route('/continueTag')
+def continueTag():
+       return render_template('conTag.html')
     
 @app.route('/jForm',methods=['POST']) 
 def jForm():
@@ -104,6 +111,34 @@ def jForm():
     jsonInfo = jsonInfo.decode('utf-8')
     jsonInfo2 = json.loads(jsonInfo)
     hists = os.listdir(os.path.join(app.static_folder,jsonInfo2['category1']['path']))
+    sorted(hists)
+    hists = [jsonInfo2['category1']['path']+'/' + file for file in hists]
+    #list = []
+    #for i in range(jsonInfo2['category1']['quantity']):
+    #      r=random.randint(1,100)
+    #      if r not in list: list.append(r)
+            
+    #print('\n'+jsonInfo)
+    #print(jsonInfo2['category1']['name'])
+    
+    return render_template('jsonForm.html',jsonInfo2=jsonInfo2,hists=hists)
+    
+@app.route('/conForm',methods=['POST']) 
+def conForm():
+    file = request.files['fileJson']
+    file2 = request.files['contJson']
+    #filename = secure_filename(file.filename) 
+    #file.save(os.path.join(SITE_ROOT, "static/temp",filename))
+    #filetype = magic.from_buffer(file.read())
+    jsonInfo = file.read()
+    jsonInfo = jsonInfo.decode('utf-8')
+    jsonInfo2 = json.loads(jsonInfo)
+    
+    jsonInfo3 = file2.read()
+    jsonInfo3 = jsonInfo3.decode('utf-8')
+    jsonInfo4 = json.loads(jsonInfo3)
+    hists = os.listdir(os.path.join(app.static_folder,jsonInfo2['category1']['path']))
+    sorted(hists)
     hists = [jsonInfo2['category1']['path']+'/' + file for file in hists]
     #list = []
     #for i in range(jsonInfo2['category1']['quantity']):
@@ -137,10 +172,12 @@ def jsonDat():
     questPerIm =  topQuest / totalIm
     contIm = 1
     contClass =1
+    ultimoIndice = 0
 
     dataJ = dataJ+'"'+obtieneNomImag(str(request.form.get('img'+str(contIm))))+'"'+":[{"
 
     for i in range(0,topQuest):
+
         dataJ = dataJ +'"'+ "Classname"+str(contClass)+'":{"opt":"' 
         reqOpt = str(request.form.get('opt'+str(i+1)))
         if reqOpt != 'None':
@@ -213,4 +250,4 @@ def favicon():
     return send_from_directory(os.path.join(app.static_folder,'/images/'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
     
 if __name__=="__main__":
-    app.run(host="0.0.0.0", debug=True, port=5000)
+    app.run(threaded=True,host="0.0.0.0", debug=True, port=5000)

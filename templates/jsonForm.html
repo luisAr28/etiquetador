@@ -138,7 +138,7 @@
 
             {% for rep in range(0,numberQ) %}
             <fieldset>
-                <div class="contadorQ float-right">{{rep+1}} de {{numberQ}}</div>
+                <div class="contadorQ">{{rep+1}} de {{numberQ}}</div>
                 <img src="{{ url_for('static', filename=hists[rep]) }}">
                 <input type="hidden" name="img{{rep+1}}" value="{{hists[rep]}}">
                 {% for a,b in y['tags'].items() %}
