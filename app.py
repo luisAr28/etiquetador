@@ -148,7 +148,7 @@ def conForm():
     #print('\n'+jsonInfo)
     #print(jsonInfo2['category1']['name'])
     
-    return render_template('jsonForm.html',jsonInfo2=jsonInfo2,hists=hists)
+    return render_template('completeJson.html',jsonInfo2=jsonInfo2,hists=hists,jsonInfo4=jsonInfo4)
 
 @app.route('/jsonDat',methods=['POST']) 
 def jsonDat():
