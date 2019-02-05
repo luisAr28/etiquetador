@@ -77,10 +77,42 @@ def saveJson():
     #otro = str(request.form.get('nombre'))
     otro = str()
     otro = otro+complete
-   
+    nQuestions = request.form.get('nQuest',type=int)
+    totalIm = request.form.get('ruta')
+    jsonInf = "{\"category1\":{\"name\":\"" + str(request.form.get('nombre'))+"\",\"path\":\"images\/"+str(request.form.get('ruta'))+"\",\"quantity\":\""+str(request.form.get('nTotalImags'))+"\",\"numtags\":\""+str(request.form.get('nImags'))+"\",\"trak\":\""+str(request.form.get('ordAlet'))+"\",\"tags\":{"
+    
+    for i in range(0,nQuestions):
+        jsonInf = jsonInf+"\"classname"+str(i)+"\":{"
+        jsonInf = jsonInf+"\"question\":\""+str(request.form.get('q'+str(i+1)))+"\",\"type\":"
+        
+        typeQuest = str(request.form.get('select'+str(i+1)))
+        
+        jsonInf = jsonInf+"\""+typeQuest+"\""
+        
+        if typeQuest != "text":
+            jsonInf = jsonInf+",\"opt\":["
+            options = str(request.form.get('opcIn'+str(i+1))).split(",")
+            for y in range(0,len(options)):                
+                jsonInf = jsonInf+"\""+options[y]+"\""
+                if (y+1) != len(options):
+                    jsonInf = jsonInf+","
+            jsonInf = jsonInf+"]"
+            
+        jsonInf = jsonInf+",\"text\":\""+str(request.form.get('chText'+str(i+1)))+"\"}"
+        
+        if(i+1)!=nQuestions:
+            jsonInf = jsonInf+","
+    
+    jsonInf = jsonInf+"}}}"
     #print(complete)
     #print(dat)
-    #print(otro)
+    #print(jsonInf)
+    
+    fileName = str(request.form.get('nombre'))
+    pathFile = "static/json/"+fileName+".json"
+    
+    with open(pathFile, 'w') as outfile:
+        outfile.write(jsonInf)
    
    #createfolder = os.path.join('C:/Users/MyUser/Desktop/Project/', 'Fileuploads/', time_stamp,)
     #filename = request.form.get('nombre')

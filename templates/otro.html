@@ -2,9 +2,10 @@
 <html lang="en">
  
 <head>
-    <title>Tag</title>
+    <title>Tag</title>    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+		
 
 		<script type="text/javascript">
 		$(function() {          
@@ -12,7 +13,11 @@
 		 
 		        $.ajax({
 		            url: '/saveJson',
-		            data: JSON.stringify($('form').serialize()),
+		          //  data: JSON.stringify($('form').serialize()),
+                   // dataType: 'json',
+                    //contentType: 'application/json',
+		            //data: JSON.stringify($('form').serialize()),
+                    data : $('form').serialize(),
                     dataType: 'json',
 		            type: 'POST',
 		            success: function(response) {
@@ -31,20 +36,23 @@
         
 
 		$(document).ready(function () {
-			  $('.opcs').hide();
+			    $('.opcs').hide();
 			  //$('#option1').show();
 			 // $('#tipo').change(function () {
                 $(document).on('change','select',function(){
-                   // alert("entra");
+                // alert("entra");
 			    //$('.opcs').hide();
 			    //$('#'+$(this).val()).show();
 			    var opCh = $(this).val();
+                  //  alert(opCh);
 			    if(opCh == "combo" || opCh == "check" || opCh == "radio")
                     {
                         var myClass = $(this).attr("class");
                        // alert(myClass);
 			    	    $('#optns'+myClass).show();
                     }
+                else
+                     $('.opcs').hide();
 			  })
 			});
             
@@ -55,7 +63,7 @@
 			 // $('#tipo').change(function () {
                 $(document).on('change','.ch',function(){
                     if(this.checked) {
-                      // alert("entra");
+                       //alert("entra");
                         document.getElementById('chHidden').disabled = true;
                         $(this).attr('value', '1');
                     }
@@ -74,9 +82,10 @@
 </head>
 <body>
     <body>
-		<form method="POST" clas='comForm' action="saveJson">
+		<form method="POST" clas='comForm' action="saveJson" enctype="multipart/form-data">
 			Ingresa el nombre de tu categoria <input type="text" name="nombre" readonly value="{{nameI}}"> <br>
 			Ingresa la ruta en donde se alojarán tus imágenes <input type="text" name="ruta" readonly value="{{rout}}"> <br>
+            Número total de imágenes de la carpeta <input type="number" name="nTotalImags" min="1" readonly value="{{nTotalImags}}"> <br>
 			Número máximo de imágenes a mostrar <input type="number" name="nImags" min="1" readonly value="{{nImgs}}"> <br>
 			Ingresa el número de preguntas <input type="number" name="nQuest" min="1" readonly value="{{questions}}"> <br>
             <input  type='hidden' value='{{valAlet}}' name='ordAlet'>
@@ -89,7 +98,7 @@
 				Pregunta <input type="text" name="q{{loop.index}}"><br>
             <div id="changeT">
 				Tipo <select id="tipo" class="{{loop.index}}" name="select{{loop.index}}">
-						<option value="texto">Texto</option>
+						<option value="text">Texto</option>
 						<option value="radio">Radio button</option>
 						<option value="combo">Combobox</option>
 						<option value="check">Checkbox</option>

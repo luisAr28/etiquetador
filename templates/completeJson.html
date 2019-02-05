@@ -127,7 +127,7 @@
     </script>
 </head>
     <body>
-        {{jsonInfo4['descarga (1).jpg']}}<br>
+        
         
         <form class="formContent" id="jform" enctype="multipart/form-data">
         {% for x,y in jsonInfo2.items() %}            
@@ -142,9 +142,7 @@
                 <img src="{{ url_for('static', filename=hists[rep]) }}">
                 <input type="hidden" name="img{{rep+1}}" value="{{hists[rep]}}">
                 {% set qPerIm = [] %}
-                {% set imName = hists[rep][hists[rep].rfind('/')+1:] %}
-                >>{{jsonInfo4[imName][0]}} <br>
-                >>{{jsonInfo4[imName][0]['Classname1']['opt']}}
+                {% set imName = hists[rep][hists[rep].rfind('/')+1:] %}                
                 {% for a,b in y['tags'].items() %}
                     {% if qPerIm.append('1') %}{% endif %}
                     es {{qPerIm|count}}
