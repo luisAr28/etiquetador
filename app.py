@@ -44,8 +44,7 @@ def signF():
 
 	if _name and _ruta and _nImags and _nQuest:
 		return json.dumps	({'pag':'tag.html','_name':_name,'_ruta':_name,'_nImags':_nImags,'_nQuest':_nQuest,'_ordAlet':_ordAlet,'questions':_nQuest});
-		#return render_template("tag.html",'_name':_name,'_ruta':_name,'_nImags':_nImags,'_nQuest':_nQuest,'_ordAlet':_ordAlet,'questions':_nQuest);
-	    #return json.dumps({'html':'<span>All fields good !!</span>'})
+
 	else:
 		return json.dumps({'html':'<span>Faltan !!</span>'})
 
@@ -113,12 +112,7 @@ def saveJson():
     
     with open(pathFile, 'w') as outfile:
         outfile.write(jsonInf)
-   
-   #createfolder = os.path.join('C:/Users/MyUser/Desktop/Project/', 'Fileuploads/', time_stamp,)
-    #filename = request.form.get('nombre')
-    #with open(filename, 'w') as f:
-     #   json.dump(request.form, f)
-    #return '/'
+
     return json.dumps({'urlI':'/'})
 
 @app.route('/tagging')
@@ -136,22 +130,13 @@ def continueTag():
 @app.route('/jForm',methods=['POST']) 
 def jForm():
     file = request.files['fileJson']
-    #filename = secure_filename(file.filename) 
-    #file.save(os.path.join(SITE_ROOT, "static/temp",filename))
-    #filetype = magic.from_buffer(file.read())
+
     jsonInfo = file.read()
     jsonInfo = jsonInfo.decode('utf-8')
     jsonInfo2 = json.loads(jsonInfo)
     hists = os.listdir(os.path.join(app.static_folder,jsonInfo2['category1']['path']))
     sorted(hists)
     hists = [jsonInfo2['category1']['path']+'/' + file for file in hists]
-    #list = []
-    #for i in range(jsonInfo2['category1']['quantity']):
-    #      r=random.randint(1,100)
-    #      if r not in list: list.append(r)
-            
-    #print('\n'+jsonInfo)
-    #print(jsonInfo2['category1']['name'])
     
     return render_template('jsonForm.html',jsonInfo2=jsonInfo2,hists=hists)
     
@@ -159,9 +144,7 @@ def jForm():
 def conForm():
     file = request.files['fileJson']
     file2 = request.files['contJson']
-    #filename = secure_filename(file.filename) 
-    #file.save(os.path.join(SITE_ROOT, "static/temp",filename))
-    #filetype = magic.from_buffer(file.read())
+
     jsonInfo = file.read()
     jsonInfo = jsonInfo.decode('utf-8')
     jsonInfo2 = json.loads(jsonInfo)
@@ -172,13 +155,7 @@ def conForm():
     hists = os.listdir(os.path.join(app.static_folder,jsonInfo2['category1']['path']))
     sorted(hists)
     hists = [jsonInfo2['category1']['path']+'/' + file for file in hists]
-    #list = []
-    #for i in range(jsonInfo2['category1']['quantity']):
-    #      r=random.randint(1,100)
-    #      if r not in list: list.append(r)
-            
-    #print('\n'+jsonInfo)
-    #print(jsonInfo2['category1']['name'])
+
     
     return render_template('completeJson.html',jsonInfo2=jsonInfo2,hists=hists,jsonInfo4=jsonInfo4)
 
@@ -240,31 +217,8 @@ def jsonDat():
     with open(pathFile, 'w') as outfile:
         outfile.write(dataJ)
     
-    #fileSen = open(pathFile,'rb').read()
-    
-    
-    #response.headers['Content-Type'] = 'application/json'
-    #response.header['Content-Disposition'] = 'attatchment;filename='+pathName+'.json'
-    
-    #return response
-    #print(Response(dataJ, mimetype='application/json',headers={'Content-Disposition':'attachment;filename=file.json'}))
-    
-    #return Response(dataJ, mimetype='application/json',headers={'Content-Disposition':'attachment;filename=file.json'})
-    #response = Response(response=dataJ, status=200, mimetype="application/json")
-    #return response
-    #return send_file(pathFile, as_attachment=True)
-    #return send_from_directory(directory='/static/temp', filename=pathName+'.json', as_attachment=True)
-    #return send_file(json.dumps(dataJ), mimetype='application/json',attachment_filename='file.json',as_attachment=True)
-    #return json.dumps({'urlI':'/downloadF','name':pathName})
-    return json.dumps({'urlI':'/'})
-    #return render_template('downJson.html');
 
-#@app.route('/sendFile', methods=['POST'])
-#def sendFile():
-#    content = str(request.form['jsonval'])
-#    return Response(content, 
-#            mimetype='application/json',
-#            headers={'Content-Disposition':'attachment;filename=file.json'})
+    return json.dumps({'urlI':'/'})
 
 @app.route('/downloadF/<path_file>')
 def downloadF(path_file):

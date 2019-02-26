@@ -1,1 +1,1 @@
-{"category1":{"name":"Colores","path":"images\/colores","quantity":"","numtags":"3","trak":"0","tags":{"classname0":{"question":"si?","type":"text","text":"1"},"classname1":{"question":"va?","type":"combo","opt":["no","si","va"],"text":"0"}}}}
+{"category1":{"name":"Colores","path":"images\/colores","quantity":"","numtags":"3","trak":"0","tags":{"classname0":{"question":"tadaaf?","type":"text","text":"1"},"classname1":{"question":"habia?","type":"combo","opt":["si","no","ok"],"text":"0"},"classname2":{"question":"ok?","type":"radio","opt":["op1","op2","op3"],"text":"0"}}}}
