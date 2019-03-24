@@ -183,27 +183,30 @@ def jsonDat():
     contClass =1
     ultimoIndice = 0
 
-    dataJ = dataJ+'"'+obtieneNomImag(str(request.form.get('img'+str(contIm))))+'"'+":[{"
+    dataJ = dataJ+'"'+obtieneNomImag(str(request.form.get('img'+str(contIm))))+'"'+":[{"+'"'+"Coords"+'"'+":{"+'"'+"x1"+'"'+":"+'"'+str(request.form.get('x1'+str(contIm)))+'",'
+    dataJ = dataJ+'"'+"y1"+'"'+":"+'"'+str(request.form.get('y1'+str(contIm)))+'",'+'"'+"x2"+'"'+":"+'"'+str(request.form.get('x2'+str(contIm)))+'",'+'"'+"y2"+'"'+":"+'"'+str(request.form.get('y2'+str(contIm)))+'"},'
+
 
     for i in range(0,topQuest):
 
-        dataJ = dataJ +'"'+ "Classname"+str(contClass)+'":{"opt":"' 
+        dataJ = dataJ +'"'+ "Classname"+str(contClass)+'":{"opt":"'
         reqOpt = str(request.form.get('opt'+str(i+1)))
         if reqOpt != 'None':
             dataJ = dataJ+reqOpt
-        
+
         dataJ=dataJ+'","text":"'+str(request.form.get('text'+str(i+1)))+'"}'
 
-        if (i+1)==(contIm*questPerIm) and (i+1)!=topQuest:      
+        if (i+1)==(contIm*questPerIm) and (i+1)!=topQuest:
             contIm+=1
             contClass=1
-            dataJ=dataJ+"}],"+'"'+obtieneNomImag(str(request.form.get('img'+str(contIm))))+'":[{'
+            dataJ=dataJ+"}],"+'"'+obtieneNomImag(str(request.form.get('img'+str(contIm))))+'":[{"'+"Coords"+'"'+":{"+'"'+"x1"+'"'+":"+'"'+str(request.form.get('x1'+str(contIm)))+'",'
+            dataJ = dataJ+'"'+"y1"+'"'+":"+'"'+str(request.form.get('y1'+str(contIm)))+'",'+'"'+"x2"+'"'+":"+'"'+str(request.form.get('x2'+str(contIm)))+'",'+'"'+"y2"+'"'+":"+'"'+str(request.form.get('y2'+str(contIm)))+'"},'
         else:
             if (i+1)!=topQuest:
                 dataJ=dataJ+","
                 contClass+=1
-        
-    
+
+
    # for i in range(request.form.get('numberQ')):
     #    dataJ = dataJ + request.form.get('img{i+1}')
     

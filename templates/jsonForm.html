@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
     <title>Form</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -8,16 +8,17 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}">
 		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
-    
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.Jcrop.js') }}"></script>
+
     <script type="text/javascript">
         var current_fs, next_fs, previous_fs; //fieldsets
         var left, opacity, scale; //fieldset properties which we will animate
         var animating; //flag to prevent quick multi-click glitches
-        
-        
-        $(function() {          
+
+
+        $(function() {
             $('#finForm').click(function() {
-		 
+
 		        $.ajax({
 		            url: '/jsonDat',
                     //contentType: 'application/json',
@@ -37,15 +38,15 @@
 		            }
 		        });
 		    });
-            
-		}); 
-        
+
+		});
+
         $(function() {
-            
-            
+
+
         $(".next").click(function(){
-  
-            
+
+
             if(animating) return false;
             animating = true;
 
@@ -56,7 +57,7 @@
             //$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
 
             //show the next fieldset
-            next_fs.show(); 
+            next_fs.show();
             //hide the current fieldset with style
             current_fs.animate({opacity: 0}, {
                 step: function(now, mx) {
@@ -69,23 +70,23 @@
                     opacity = 1 - now;
                     current_fs.css({'transform': 'scale('+scale+')'});
                     next_fs.css({'left': left, 'opacity': opacity});
-                }, 
-                duration: 800, 
+                },
+                duration: 800,
                 complete: function(){
                     current_fs.hide();
                     animating = false;
-                }, 
+                },
                 //this comes from the custom easing plugin
                 easing: 'easeInOutBack'
             });
-            
+
             $('html, body').animate({scrollTop:0}, 'slow');
-        });   
         });
-        
+        });
+
         $(function() {
         $(".previous").click(function(){
-                      
+
                 if(animating) return false;
                 animating = true;
 
@@ -96,7 +97,7 @@
                 //$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
 
                 //show the previous fieldset
-                previous_fs.show(); 
+                previous_fs.show();
                 //hide the current fieldset with style
                 current_fs.animate({opacity: 0}, {
                     step: function(now, mx) {
@@ -109,21 +110,93 @@
                         opacity = 1 - now;
                         current_fs.css({'left': left});
                         previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
-                    }, 
-                    duration: 800, 
+                    },
+                    duration: 800,
                     complete: function(){
                         current_fs.hide();
                         animating = false;
-                    }, 
+                    },
                     //this comes from the custom easing plugin
                     easing: 'easeInOutBack'
                 });
+                $('html, body').animate({scrollTop:0}, 'slow');
             });
 
             $(".submit").click(function(){
                 return false;
             })
             });
+
+      /*$.cropfun = $(function() {
+
+
+      });*/
+
+        function showCoords(c)
+          {
+            $('#x1'+op).val(c.x);
+            $('#y1'+op).val(c.y);
+            $('#x2'+op).val(c.x2);
+            $('#y2'+op).val(c.y2);
+            // $('#w'+op).val(c.w);
+            // $('#h'+op).val(c.h);
+            // x1.val(c.x);
+            // y1.val(c.y);
+            // x2.val(c.x2);
+            // y2.val(c.y2);
+            // w.val(c.w);
+            // h.val(c.h);
+          };
+
+          function clearCoords()
+          {
+            $('#coords'+op+' input').val('');
+          };
+
+          function crop(e){
+            console.log(e.id);
+            // alert(e);
+          }
+
+          $(document).ready(function () {
+            $('img').on("mouseenter",function(){
+                op = $(this).attr('name');
+                console.log(op);
+
+                var jcrop_api;
+
+                x1 = $('#x1'+op);
+                x2 = $('#x2'+op);
+                y1 = $('#y1'+op);
+                y2 = $('#y2'+op);
+                // w = $('#w'+op);
+                // h = $('#h'+op);
+
+                $('#im'+op).Jcrop({
+                  onChange:   showCoords,
+                  onSelect:   showCoords,
+                  onRelease:  clearCoords
+                },function(){
+                  jcrop_api = this;
+                });
+
+                $('#coords'+op).on('change','input',function(e){
+                      x1 = x1.val(),
+                      x2 = x2.val(),
+                      y1 = y1.val(),
+                      y2 = y2.val();
+                  jcrop_api.setSelect([x1,y1,x2,y2]);
+                });
+            });
+          });
+    </script>
+    <script>
+      function agregaBoundy(){
+        let formulario = document.getElementById('formulario').cloneNode(true);
+        let contenedor = document.getElementById('contenedor');
+        console.log(formulario);
+        contenedor.appendChild(formulario);
+      }
     </script>
 </head>
     <body>
@@ -139,59 +212,69 @@
             {% for rep in range(0,numberQ) %}
             <fieldset>
                 <div class="contadorQ">{{rep+1}} de {{numberQ}}</div>
-                <img src="{{ url_for('static', filename=hists[rep]) }}">
+                <img id="im{{rep+1}}" name="{{rep+1}}" src="{{ url_for('static', filename=hists[rep]) }}">
                 <input type="hidden" name="img{{rep+1}}" value="{{hists[rep]}}">
-                {% for a,b in y['tags'].items() %}
-                    {% if indQuest.append('1') %}{% endif %}
-                    <!-- <div id="name">{{ b }}</div>-->
-                    <h3>{{b['question']}}</h3>
-                    {% if b['type'] == 'radio' %}
-                        {% for k in b['opt'] %}
-                            <input type="radio" name="opt{{indQuest|count}}" value="{{k}}"> {{k}}<br>
-                        {% endfor %}
-                    {% elif b['type'] == 'text' %}
-                        <input type="text" name="opt{{indQuest|count}}"><br><br>
-                    {% elif b['type'] == 'combo' %}
-                        <select name="opt{{indQuest|count}}">
-                            <option value="">Selecciona</option>
-                        {% for m in b['opt'] %}
-                            <option value="{{m}}">{{m}}</option>
-                        {% endfor %}    
-                        </select><br><br>
-                    {% elif b['type'] == 'check' %}
-                        {% for c in b['opt'] %}
-                            <input type="checkbox" name="opt{{indQuest|count}}" value="{{c}}"> {{c}}<br><br>
-                        {% endfor %}
-                    {% endif %}
-                    {% if b['text'] == '1' %}
-                        <textarea name="text{{indQuest|count}}"></textarea><br><br>
-                    {% else %}
-                        <input type="hidden" name="text{{indQuest|count}}" value="">
-                    {% endif %}
-                {% endfor %}
+                <div id="contenedor">
+                  <div id="formulario">
+                    <div id="coords{{rep+1}}">
+                      <input type="text" id="x1{{rep+1}}" name="x1{{rep+1}}" value="" placeholder="x1" readonly>
+                      <input type="text" id="y1{{rep+1}}" name="y1{{rep+1}}" value="" placeholder="y1" readonly>
+                      <input type="text" id="x2{{rep+1}}" name="x2{{rep+1}}" value="" placeholder="x2" readonly>
+                      <input type="text" id="y2{{rep+1}}" name="y2{{rep+1}}" value="" placeholder="y2" readonly>
+                      <!-- <input type="text" id="w{{rep+1}}" name="w{{rep+1}}" value="" placeholder="w"> -->
+                      <!-- <input type="text" id="h{{rep+1}}" name="h{{rep+1}}" value="" placeholder="h"> -->
+                    </div>
+                    {% for a,b in y['tags'].items() %}
+                        {% if indQuest.append('1') %}{% endif %}
+                        <!-- <div id="name">{{ b }}</div>-->
+                        <h3>{{b['question']}}</h3>
+                        {% if b['type'] == 'radio' %}
+                            {% for k in b['opt'] %}
+                                <input type="radio" name="opt{{indQuest|count}}" value="{{k}}"> {{k}}<br>
+                            {% endfor %}
+                        {% elif b['type'] == 'text' %}
+                            <input type="text" name="opt{{indQuest|count}}"><br><br>
+                        {% elif b['type'] == 'combo' %}
+                            <select name="opt{{indQuest|count}}">
+                                <option value="">Selecciona</option>
+                            {% for m in b['opt'] %}
+                                <option value="{{m}}">{{m}}</option>
+                            {% endfor %}
+                            </select><br><br>
+                        {% elif b['type'] == 'check' %}
+                            {% for c in b['opt'] %}
+                                <input type="checkbox" name="opt{{indQuest|count}}" value="{{c}}"> {{c}}<br><br>
+                            {% endfor %}
+                        {% endif %}
+                        {% if b['text'] == '1' %}
+                            <textarea name="text{{indQuest|count}}"></textarea><br><br>
+                        {% else %}
+                            <input type="hidden" name="text{{indQuest|count}}" value="">
+                        {% endif %}
+                    {% endfor %}
+                  </div>
+                  </div>
                 {% if rep == numberQ-1 %}
-                        
-                        
+
                         <input type="button" name="previous" class="previous" value="Anterior" />
-                        
+
                 {% elif rep == 0 %}
-                    
+                    <br>
+                    <input type="button" name="" value="Agregar Boundy Box" onclick="agregaBoundy()"> <br><br><br>
                     <input type="hidden" name="preguntas" value="{{indQuest|count}}">
                     <input type="button" name="next" class="next" value="Siguiente" />
                 {% else %}
-                    
-                    
+
+
                     <input type="button" name="previous" class="previous" value="Anterior" />
                     <input type="button" name="next" class="next" value="Siguiente" />
-                    
-                {% endif %}
 
+                {% endif %}
                 </fieldset>
             {% endfor %}
         {% endfor %}
-        
+
         <input type="submit" id="finForm" name="submit" class="submit" value="Finalizar" />
         </form>
     </body>
 </html>
-    
