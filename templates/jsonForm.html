@@ -7,6 +7,7 @@
     <link href="{{ url_for('static', filename='css/jsonFormStyle.css') }}" rel="stylesheet" type= "text/css">
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.Jcrop.css') }}">
 		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.Jcrop.js') }}"></script>
 
@@ -173,9 +174,10 @@
                 // h = $('#h'+op);
 
                 $('#im'+op).Jcrop({
+                  allowResize: true,
                   onChange:   showCoords,
                   onSelect:   showCoords,
-                  onRelease:  clearCoords
+                  onRelease:  clearCoords,                  
                 },function(){
                   jcrop_api = this;
                 });
@@ -217,6 +219,7 @@
                 <div id="contenedor">
                   <div id="formulario">
                     <div id="coords{{rep+1}}">
+                      <br><br>
                       <input type="text" id="x1{{rep+1}}" name="x1{{rep+1}}" value="" placeholder="x1" readonly>
                       <input type="text" id="y1{{rep+1}}" name="y1{{rep+1}}" value="" placeholder="y1" readonly>
                       <input type="text" id="x2{{rep+1}}" name="x2{{rep+1}}" value="" placeholder="x2" readonly>
