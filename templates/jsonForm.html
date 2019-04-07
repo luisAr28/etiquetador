@@ -173,11 +173,12 @@
                 // w = $('#w'+op);
                 // h = $('#h'+op);
 
-                $('#im'+op).Jcrop({
+                //$('#im'+op).Jcrop({
+                $('#imgContainer3').Jcrop({
                   allowResize: true,
                   onChange:   showCoords,
                   onSelect:   showCoords,
-                  onRelease:  clearCoords,                  
+                  onRelease:  clearCoords,
                 },function(){
                   jcrop_api = this;
                 });
@@ -193,9 +194,21 @@
           });
     </script>
     <script>
-      function agregaBoundy(){
-        let formulario = document.getElementById('formulario').cloneNode(true);
-        let contenedor = document.getElementById('contenedor');
+      /*function editaBound(this){
+
+      }*/
+
+      function agregaBoundy(e){
+        let actual = parseInt(e.id);
+        console.log(actual);
+        
+        let contaField = document.getElementById('numField');
+        let contaBoundy = document.getElementById('contadorBoundy'+actual);
+        console.log(contaBoundy);
+        
+        let formulario = document.getElementById('formulario'+actual).cloneNode(true);
+        let contenedor = document.getElementById('contenedor'+actual);
+        contaBoundy.value = parseInt(contaBoundy.value) + 1;
         console.log(formulario);
         contenedor.appendChild(formulario);
       }
@@ -213,17 +226,24 @@
 
             {% for rep in range(0,numberQ) %}
             <fieldset>
+                <input type="hidden" id="contadorBoundy{{rep+1}}" value="0">
+                <!-- <input type="hidden" id="numField" value="{{rep+1}}"> -->
                 <div class="contadorQ">{{rep+1}} de {{numberQ}}</div>
-                <img id="im{{rep+1}}" name="{{rep+1}}" src="{{ url_for('static', filename=hists[rep]) }}">
+                <div id="imgContainer">
+                  <img class="imagenCon" id="im{{rep+1}}" name="{{rep+1}}" src="{{ url_for('static', filename=hists[rep]) }}">
+                  <img id="imgContainer3">
+                  <!-- <div id="imgContainer3"></div> -->
+                </div>
                 <input type="hidden" name="img{{rep+1}}" value="{{hists[rep]}}">
-                <div id="contenedor">
-                  <div id="formulario">
+                <div id="contenedor{{rep+1}}">
+                  <div id="formulario{{rep+1}}">
                     <div id="coords{{rep+1}}">
                       <br><br>
                       <input type="text" id="x1{{rep+1}}" name="x1{{rep+1}}" value="" placeholder="x1" readonly>
                       <input type="text" id="y1{{rep+1}}" name="y1{{rep+1}}" value="" placeholder="y1" readonly>
                       <input type="text" id="x2{{rep+1}}" name="x2{{rep+1}}" value="" placeholder="x2" readonly>
                       <input type="text" id="y2{{rep+1}}" name="y2{{rep+1}}" value="" placeholder="y2" readonly>
+                      <input type="button" id="editaBound" value="Editar Boundy Box">
                       <!-- <input type="text" id="w{{rep+1}}" name="w{{rep+1}}" value="" placeholder="w"> -->
                       <!-- <input type="text" id="h{{rep+1}}" name="h{{rep+1}}" value="" placeholder="h"> -->
                     </div>
@@ -257,13 +277,13 @@
                     {% endfor %}
                   </div>
                   </div>
+                  <br>
+                  <input type="button" id="{{rep+1}}" value="Agregar Boundy Box" onclick="agregaBoundy(this)"> <br><br><br>
                 {% if rep == numberQ-1 %}
 
                         <input type="button" name="previous" class="previous" value="Anterior" />
 
-                {% elif rep == 0 %}
-                    <br>
-                    <input type="button" name="" value="Agregar Boundy Box" onclick="agregaBoundy()"> <br><br><br>
+                {% elif rep == 0 %}                    
                     <input type="hidden" name="preguntas" value="{{indQuest|count}}">
                     <input type="button" name="next" class="next" value="Siguiente" />
                 {% else %}
