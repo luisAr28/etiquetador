@@ -203,25 +203,53 @@
           });
 
         
-      function editaBoundy(e,selector){
+    function editaBoundy(e,selector){
         selectorCoords = '-'+selector+'-'+e.name;
         console.log(selectorCoords);
         
-      }
+    }
 
-      function agregaBoundy(e,actualC){
+    function eliminaBoundy(e,actualC){
+        let contenedor = document.getElementById('contenedor'+actualC);
+        let actual = parseInt(e.name);
+        let formulario = document.getElementById('formulario'+actual);
+        eliminaArrayBoundy(actualC,actual);
+        contenedor.removeChild(formulario);
+    }
+
+    function eliminaArrayBoundy(actualC,actual){
+        let contador = document.getElementById('contadorBoundy'+actualC);
+        let array = JSON.parse("["+contador.value+"]");
+        let joined = "";
+        array.splice(array.indexOf(actual),1);
+        joined = array.join(",");
+        console.log(joined);
+        contador.value=joined
+    }
+
+    function agregaArrayBoundy(actualC,actual){
+        let contador = document.getElementById('contadorBoundy'+actualC);
+        let array = JSON.parse("["+contador.value+"]");
+        let joined = "";
+        array.push(actual+1);
+        joined = array.join(",");
+        contador.value=joined
+    }
+
+    function agregaBoundy(e,actualC){
         let actual = parseInt(e.id);        
         let arrayElements = [];
+        agregaArrayBoundy(actualC,actual);
         e.id=parseInt(e.id)+1;
         console.log(actual);
         
         let contaField = document.getElementById('numField');
-        let contaBoundy = document.getElementById('contadorBoundy'+actualC);
-        console.log(contaBoundy);
+        //let contaBoundy = document.getElementById('contadorBoundy'+actualC);
+        //console.log(contaBoundy);
         
         let formulario = document.getElementById('formulario'+actual).cloneNode(true);
         let contenedor = document.getElementById('contenedor'+actualC);
-        contaBoundy.value = parseInt(contaBoundy.value) + 1;
+        //contaBoundy.value = parseInt(contaBoundy.value) + 1;
         arrayElements = [].slice.call(formulario.getElementsByTagName("*")); 
         console.log(arrayElements);
         let lastDigit;
@@ -275,12 +303,8 @@
         console.log("DIV: "+formulario.id);
         
         contenedor.appendChild(formulario);
-      }
+    }
     </script>
-    <!-- <script>      
-
-      
-    </script> -->
 </head>
     <body>
         <form class="formContent" id="jform" enctype="multipart/form-data">
@@ -304,13 +328,14 @@
                 <input type="hidden" name="img{{rep+1}}" value="{{hists[rep]}}">
                 <div id="contenedor{{rep+1}}">
                   <div id="formulario{{rep+1}}">
-                    <div id="coords{{rep+1}}" name="coords-{{rep+1}}">
+                    <div id="coords{{rep+1}}" name="coords-{{rep+1}}-1">
                       <br><br>
                       <input type="text" id="x1-{{rep+1}}-1" name="x1-{{rep+1}}-1" value="" placeholder="x1" readonly>
                       <input type="text" id="y1-{{rep+1}}-1" name="y1-{{rep+1}}-1" value="" placeholder="y1" readonly>
                       <input type="text" id="x2-{{rep+1}}-1" name="x2-{{rep+1}}-1" value="" placeholder="x2" readonly>
                       <input type="text" id="y2-{{rep+1}}-1" name="y2-{{rep+1}}-1" value="" placeholder="y2" readonly>
                       <input type="button" id="editaBound" name="1" value="Editar Boundy Box" onclick="editaBoundy(this,{{rep+1}})">
+                      <input type="button" id="editaBound" name="1" value="Eliminar" onclick="eliminaBoundy(this,{{rep+1}})">
                       <!-- <input type="text" id="w{{rep+1}}" name="w{{rep+1}}" value="" placeholder="w"> -->
                       <!-- <input type="text" id="h{{rep+1}}" name="h{{rep+1}}" value="" placeholder="h"> -->
                     </div>
