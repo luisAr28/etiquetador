@@ -129,29 +129,12 @@
             })
             });
 
-      /*$.cropfun = $(function() {
-
-
-      });*/
-
         function showCoords(c)
           {
             $('[name=x1'+selectorCoords+']').val(c.x);
             $('[name=y1'+selectorCoords+']').val(c.y);
             $('[name=x2'+selectorCoords+']').val(c.x2);
             $('[name=y2'+selectorCoords+']').val(c.y2);
-            // $('#x1'+selectorCoords).val(c.x);
-            // $('#y1'+selectorCoords).val(c.y);
-            // $('#x2'+selectorCoords).val(c.x2);
-            // $('#y2'+selectorCoords).val(c.y2);
-            // $('#w'+op).val(c.w);
-            // $('#h'+op).val(c.h);
-            // x1.val(c.x);
-            // y1.val(c.y);
-            // x2.val(c.x2);
-            // y2.val(c.y2);
-            // w.val(c.w);
-            // h.val(c.h);
           };
 
           function clearCoords()
@@ -175,14 +158,7 @@
                 x2 = $('[name=x2'+selectorCoords+']')
                 y1 = $('[name=y1'+selectorCoords+']')
                 y2 = $('[name=y2'+selectorCoords+']')
-                // x1 = $('#x1'+selectorCoords);
-                // x2 = $('#x2'+selectorCoords);
-                // y1 = $('#y1'+selectorCoords);
-                // y2 = $('#y2'+selectorCoords);
-                // w = $('#w'+op);
-                // h = $('#h'+op);
 
-                //$('#im'+op).Jcrop({
                 $('#imgContainer'+op).Jcrop({
                   allowResize: true,
                   onChange:   showCoords,
@@ -205,8 +181,6 @@
         
     function editaBoundy(e,selector){
         selectorCoords = '-'+selector+'-'+e.name;
-        console.log(selectorCoords);
-        
     }
 
     function eliminaBoundy(e,actualC){
@@ -249,86 +223,68 @@
     function agregaBoundy(e,actualC){
         let actual = parseInt(e.id);        
         let arrayElements = [];
-        let lBoundy = document.getElementById('lastBoundy'+actualC);
-        let lastInd = parseInt(lBoundy.value);
-        console.log("ULTIMO: "+lastInd);
-        
-        agregaArrayBoundy(actualC,actual);
-        e.id=parseInt(e.id)+1;
-        console.log(actual);
-        
-        let contaField = document.getElementById('numField');
-        //let contaBoundy = document.getElementById('contadorBoundy'+actualC);
-        //console.log(contaBoundy);
-        
+        let nextId = document.getElementById('lastBoundy'+actualC);
+        let lBoundy = document.getElementById('contadorBoundy'+actualC);
+        let arrayCboundy = lBoundy.value.split(",");
+        let lastInd = parseInt(arrayCboundy[arrayCboundy.length-1]);
         let formulario = document.getElementById('formulario-'+actualC+'-'+lastInd).cloneNode(true);
-        let contenedor = document.getElementById('contenedor'+actualC);
-        //contaBoundy.value = parseInt(contaBoundy.value) + 1;
-        arrayElements = [].slice.call(formulario.getElementsByTagName("*")); 
-        console.log(arrayElements);
-        let lastIdInp = document.getElementById('lastInputId'+actualC);
-        let valueLastId = parseInt(lastIdInp.value);
-        let lastDigit;
-        //let formId = "formulario"+actual;
-        //console.log("FORMA:"+formulario.id.length);
-        
-       // console.log("FORM: "+parseInt(formulario.id.slice(formulario.id.lastIndexOf('o')+1,formulario.id.length)));
-        
-        let idForm = "formulario-"+actualC+'-'+(parseInt(formulario.id.slice(formulario.id.lastIndexOf('-')+1,formulario.id.length))+1)
-        formulario.id = idForm;
-        formulario.name = idForm;
-        for (let index = 0; index < arrayElements.length; index++) {
-        //    if(formulario.id==formId)
-         //   {
-                //formId.id=
-         //       console.log(formulario.id);
-                
-         //       console.log("formulario"+(parseInt(formulario.id.slice(formulario.id.lastIndexOf('o'),formulario.id.length))+1));
-          //  }            
 
-            if(arrayElements[index].name)
-            {
-                lastDigit = 0;
-                //lastDigit++;
-                if((arrayElements[index].readOnly==false || arrayElements[index].id=="combo")&&arrayElements[index].type=="button"){
-                    lastDigit = parseInt(arrayElements[index].name.slice(arrayElements[index].name.lastIndexOf('-')+1,arrayElements[index].name.length));                    
-                    arrayElements[index].name=arrayElements[index].name.slice(0,arrayElements[index].name.lastIndexOf('-')+1)+(parseInt(lastDigit)+parseInt(valueLastId));
-                }
-                else{
-                    lastDigit = parseInt(arrayElements[index].name.slice(arrayElements[index].name.lastIndexOf('-')+1,arrayElements[index].name.length))+1;
-                    arrayElements[index].name=arrayElements[index].name.slice(0,arrayElements[index].name.lastIndexOf('-')+1)+lastDigit;
-                }
+        if(formulario)
+            {    
+                e.id=parseInt(e.id)+1;
                 
+                let contaField = document.getElementById('numField');
                 
-                if(arrayElements[index].type=="radio")
-                    arrayElements[index].checked=false;
+                let contenedor = document.getElementById('contenedor'+actualC);
+                arrayElements = [].slice.call(formulario.getElementsByTagName("*")); 
+                console.log(arrayElements);
+                let lastIdInp = document.getElementById('lastInputId'+actualC);
+                let valueLastId = parseInt(lastIdInp.value);
+                let lastDigit;
+                
+                let idForm = "formulario-"+actualC+'-'+(parseInt(nextId.value)+1);
+                formulario.id = idForm;
+                console.log("FORMULARIO ID: "+formulario.id);
+                
+                formulario.name = idForm;
+                console.log("FORMULARIO ID: "+formulario.name);
+                for (let index = 0; index < arrayElements.length; index++) {
+                    if(arrayElements[index].name)
+                    {
+                        lastDigit = 0;
+                        //lastDigit++;
+                        if((arrayElements[index].readOnly==false || arrayElements[index].id=="combo")&&arrayElements[index].type!="button"){
+                            lastDigit = parseInt(arrayElements[index].name.slice(arrayElements[index].name.lastIndexOf('-')+1,arrayElements[index].name.length));                    
+                            arrayElements[index].name=arrayElements[index].name.slice(0,arrayElements[index].name.lastIndexOf('-')+1)+(parseInt(lastDigit)+parseInt(valueLastId));
+                        }
+                        else{
+                            lastDigit = parseInt(arrayElements[index].name.slice(arrayElements[index].name.lastIndexOf('-')+1,arrayElements[index].name.length))+1;
+                            arrayElements[index].name=arrayElements[index].name.slice(0,arrayElements[index].name.lastIndexOf('-')+1)+lastDigit;
+                        }
+                        
+                        
+                        if(arrayElements[index].type=="radio")
+                            arrayElements[index].checked=false;
 
-                if(arrayElements[index].type=="checkbox")
-                    arrayElements[index].selected=false;
-                
-                if(arrayElements[index].type=="text")
-                    arrayElements[index].value="";
-                    
-                if(arrayElements[index].id=="textarea")
-                    arrayElements[index].value="";
-            /*if((arrayElements[index]).toString().indexOf('#')!=-1)
-            {
-                console.log("ENTRANDO");
-                
-                console.log(arrayElements[index]);
-            }     */     
-           // console.log(arrayElements[index]);
-            //console.log(arrayElements[index].name.slice(0,arrayElements[index].name.lastIndexOf('-')+1));
-            //console.log(arrayElements[index].name.slice(arrayElements[index].name.lastIndexOf('-')+1,arrayElements[index].name.length));
-            //console.log(lastDigit);
-            
+                        if(arrayElements[index].type=="checkbox")
+                            arrayElements[index].selected=false;
+                        
+                        if(arrayElements[index].type=="text")
+                            arrayElements[index].value="";
+                            
+                        if(arrayElements[index].id=="textarea")
+                            arrayElements[index].value="";
+                    }
+                }
+                console.log("DIV: "+formulario.id);
+                console.log("NAME: "+formulario.name);
+                agregaArrayBoundy(actualC,actual);
+                contenedor.appendChild(formulario);
             }
+        else{
+            console.log("No se pudo clonar el formulario");
+            
         }
-       // let formId=formulario.getElementById("formulario"+actual);
-        //lastIdInp.value = lastDigit+valueLastId;
-        console.log("DIV: "+formulario.id);
-        
-        contenedor.appendChild(formulario);
     }
     </script>
 </head>
@@ -346,27 +302,28 @@
             {% set indQuest = [] %}
             <fieldset>
                 <input type="hidden" id="lastBoundy{{rep+1}}" value="1">
-                <input type="hidden" id="contadorBoundy{{rep+1}}" value="1">
+                <input type="hidden" id="contadorBoundy{{rep+1}}" name="contadorBoundy{{rep+1}}" value="1">
+                <input type="hidden" name="checkBoundy" value="{{y['boundy']}}">
                 <!-- <input type="hidden" id="numField" value="{{rep+1}}"> -->
                 <div class="contadorQ">{{rep+1}} de {{numberQ}}</div>
                 <div id="imgContainer{{rep+1}}">
-                  <img class="imagenCon" id="im{{rep+1}}" name="{{rep+1}}" src="{{ url_for('static', filename=hists[rep]) }}">
-                  <!-- <div id="imgContainer3"></div> -->
+                    <img class="imagenCon" id="im{{rep+1}}" name="{{rep+1}}" src="{{ url_for('static', filename=hists[rep]) }}">
+                    <!-- <div id="imgContainer3"></div> -->
                 </div>
                 <input type="hidden" name="img{{rep+1}}" value="{{hists[rep]}}">
                 <div id="contenedor{{rep+1}}">
-                  <div id="formulario-{{rep+1}}-1" name="formulario-{{rep+1}}-1">
-                    <div id="coords{{rep+1}}" name="coords-{{rep+1}}-1">
-                      <br><br>
-                      <input type="text" id="x1-{{rep+1}}-1" name="x1-{{rep+1}}-1" value="" placeholder="x1" readonly>
-                      <input type="text" id="y1-{{rep+1}}-1" name="y1-{{rep+1}}-1" value="" placeholder="y1" readonly>
-                      <input type="text" id="x2-{{rep+1}}-1" name="x2-{{rep+1}}-1" value="" placeholder="x2" readonly>
-                      <input type="text" id="y2-{{rep+1}}-1" name="y2-{{rep+1}}-1" value="" placeholder="y2" readonly>
-                      <input type="button" id="editaBound" name="1" value="Editar Boundy Box" onclick="editaBoundy(this,{{rep+1}})">
-                      <input type="button" id="editaBound" name="1" value="Eliminar" onclick="eliminaBoundy(this,{{rep+1}})">
-                      <!-- <input type="text" id="w{{rep+1}}" name="w{{rep+1}}" value="" placeholder="w"> -->
-                      <!-- <input type="text" id="h{{rep+1}}" name="h{{rep+1}}" value="" placeholder="h"> -->
-                    </div>
+                <div id="formulario-{{rep+1}}-1" name="formulario-{{rep+1}}-1">
+                    {%if y['boundy'] == '1'%}
+                        <div id="coords{{rep+1}}" name="coords-{{rep+1}}-1">
+                        <br><br>
+                        <input type="text" id="x1-{{rep+1}}-1" name="x1-{{rep+1}}-1" value="" placeholder="x1" readonly>
+                        <input type="text" id="y1-{{rep+1}}-1" name="y1-{{rep+1}}-1" value="" placeholder="y1" readonly>
+                        <input type="text" id="x2-{{rep+1}}-1" name="x2-{{rep+1}}-1" value="" placeholder="x2" readonly>
+                        <input type="text" id="y2-{{rep+1}}-1" name="y2-{{rep+1}}-1" value="" placeholder="y2" readonly>
+                        <input type="button" id="editaBound" name="1" value="Editar Boundy Box" onclick="editaBoundy(this,{{rep+1}})">
+                        <input type="button" id="editaBound" name="1" value="Eliminar" onclick="eliminaBoundy(this,{{rep+1}})">
+                        </div>
+                    {% endif %}
                     {% for a,b in y['tags'].items() %}
                         {% if indQuest.append('1') %}{% endif %}
                         <!-- <div id="name">{{ b }}</div>-->
@@ -395,11 +352,13 @@
                             <input type="hidden" name="text-{{rep+1}}-{{indQuest|count}}" value="">
                         {% endif %}
                     {% endfor %}                    
-                  </div>                  
-                  </div>
-                  <input type="hidden" id="lastInputId{{rep+1}}" value="{{indQuest|count}}">
-                  <br>
-                  <input type="button" id="{{rep+1}}" value="Agregar Boundy Box" onclick="agregaBoundy(this,{{rep+1}})"> <br><br><br>
+                </div>                  
+                </div>
+                <input type="hidden" id="lastInputId{{rep+1}}" value="{{indQuest|count}}">
+                <br>
+                {%if y['boundy'] == '1'%}
+                <input type="button" id="{{rep+1}}" value="Agregar Boundy Box" onclick="agregaBoundy(this,{{rep+1}})"> <br><br><br>
+                {% endif %}
                 {% if rep == numberQ-1 %}
 
                         <input type="button" name="previous" class="previous" value="Anterior" />

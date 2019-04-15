@@ -51,21 +51,31 @@ def signF():
 
 @app.route("/fillF",methods=['POST'])
 def fillF():
-	name= request.form.get('nombre')
-	rout= request.form.get('ruta')
-	nImgs= request.form.get('nImags')
-	orAlet= request.form.get('ordAlet')
-	questions = int(request.form.get('nQuest'))
-	if orAlet:
-		valAlet="1"
-		orAlet="checked"
-	else:
-		orAlet="unchecked"
-		valAlet="0"
-	print(orAlet)
-	#if name and rout and nImags and questions:
-	return render_template('otro.html',questions=questions,nameI=name,rout=rout,nImgs=nImgs,orAlet=orAlet,valAlet=valAlet)
-	#else
+    name= request.form.get('nombre')
+    rout= request.form.get('ruta')
+    nImgs= request.form.get('nImags')
+    orAlet= request.form.get('ordAlet')
+    questions = int(request.form.get('nQuest'))
+    checkBound = request.form.get('boundyBox')
+
+    if orAlet:
+        valAlet="1"
+        orAlet="checked"
+    else:
+        orAlet="unchecked"
+        valAlet="0"
+
+    if checkBound:
+        valBound="1"
+        checkBound="checked"
+    else:
+        checkBound="unchecked"
+        valBound="0"
+
+    print(orAlet)
+    #if name and rout and nImags and questions:
+    return render_template('otro.html',questions=questions,nameI=name,rout=rout,nImgs=nImgs,orAlet=orAlet,valAlet=valAlet,checkBound=checkBound,valBound=valBound)
+    #else
 
 
 @app.route("/saveJson",methods=['POST'])
@@ -79,7 +89,7 @@ def saveJson():
     otro = otro+complete
     nQuestions = request.form.get('nQuest',type=int)
     totalIm = request.form.get('ruta')
-    jsonInf = "{\"category1\":{\"name\":\"" + str(request.form.get('nombre'))+"\",\"path\":\"images\/"+str(request.form.get('ruta'))+"\",\"quantity\":\""+str(request.form.get('nTotalImags'))+"\",\"numtags\":\""+str(request.form.get('nImags'))+"\",\"trak\":\""+str(request.form.get('ordAlet'))+"\",\"tags\":{"
+    jsonInf = "{\"category1\":{\"name\":\"" + str(request.form.get('nombre'))+"\",\"path\":\"images\/"+str(request.form.get('ruta'))+"\",\"quantity\":\""+str(request.form.get('nTotalImags'))+"\",\"numtags\":\""+str(request.form.get('nImags'))+"\",\"trak\":\""+str(request.form.get('ordAlet'))+"\",\"boundy\":\""+str(request.form.get('checkBound'))+"\",\"tags\":{"
     
     for i in range(0,nQuestions):
         jsonInf = jsonInf+"\"classname"+str(i)+"\":{"
@@ -163,62 +173,53 @@ def conForm():
 @app.route('/jsonDat',methods=['POST']) 
 def jsonDat():
     print("entrando")
-    dat = request.form.get('opt1')
-    prueba = request.form.get('text1')
-   # dat.to_dict(flat=False)
-#    dato = request.get_json()
-    dat = request.form
-    #dat = dict(request.form)
-   # print(dato)
-    #print(dat)
-    #print(prueba)
     
     dataJ = "{"
     
-    totalIm = request.form.get('cantidad',type=int)
-    topQuest = totalIm*request.form.get('preguntas',type=int)
-    #print(topQuest)
+    totalIm = int(request.form.get('cantidad',type=int))
+    questPerIm = request.form.get('preguntas',type=int)  
 
-    questPerIm =  topQuest / totalIm
-    contIm = 1
-    contClass =1
-    ultimoIndice = 0
+    boundyAble = str(request.form.get('checkBoundy'))
+    print(boundyAble)
+    stringBoundyAble = "" 
 
-    dataJ = dataJ+'"'+obtieneNomImag(str(request.form.get('img'+str(contIm))))+'"'+":[{"+'"'+"Coords"+'"'+":{"+'"'+"x1"+'"'+":"+'"'+str(request.form.get('x1'+str(contIm)))+'",'
-    dataJ = dataJ+'"'+"y1"+'"'+":"+'"'+str(request.form.get('y1'+str(contIm)))+'",'+'"'+"x2"+'"'+":"+'"'+str(request.form.get('x2'+str(contIm)))+'",'+'"'+"y2"+'"'+":"+'"'+str(request.form.get('y2'+str(contIm)))+'"},'
+    for i in range(0,totalIm):
+        dataJ = dataJ+'"'+obtieneNomImag(str(request.form.get('img'+str(i+1))))+'":[{'
+        countBoundy = str(request.form.get('contadorBoundy'+str(i+1)))
+        arrayBoundy = countBoundy.split(",")
 
-    #dataJ = dataJ+'"'+obtieneNomImag(str(request.form.get('img'+str(contIm))))+'"'+":[{"+'"'+"Coords"+'"'+":{"+'"'+"x1"+'"'+":"+'"'+str(random.randint(100, 700))+'",'
-    #dataJ = dataJ+'"'+"y1"+'"'+":"+'"'+str(random.randint(100, 700))+'",'+'"'+"x2"+'"'+":"+'"'+str(random.randint(100, 700))+'",'+'"'+"y2"+'"'+":"+'"'+str(random.randint(100, 700))+'"},'
+        for j in range(0,len(arrayBoundy)):
+            if boundyAble=='1':
+                stringBoundyAble = "}]"
+                dataJ = dataJ+'"ClassSet'+str(j+1)+'":[{'
+                dataJ = dataJ+'"Coords":{'
+                dataJ = dataJ+'"x1":"'+evaluaValor(str(request.form.get('x1-'+str(i+1)+'-'+str(arrayBoundy[j]))))+'",'
+                dataJ = dataJ+'"x2":"'+evaluaValor(str(request.form.get('x2-'+str(i+1)+'-'+str(arrayBoundy[j]))))+'",'
+                dataJ = dataJ+'"y1":"'+evaluaValor(str(request.form.get('y1-'+str(i+1)+'-'+str(arrayBoundy[j]))))+'",'
+                dataJ = dataJ+'"y2":"'+evaluaValor(str(request.form.get('y2-'+str(i+1)+'-'+str(arrayBoundy[j]))))+'"'
+                dataJ = dataJ+"},"
+                if (j+1)!=len(arrayBoundy):
+                    stringBoundyAble = stringBoundyAble+","
+            else:
+                stringBoundyAble = ""
 
+            for k in range(0,questPerIm):
+                dataJ = dataJ + '"Classname'+str(k+1)+'":{'
+                dataJ = dataJ + '"opt":"'+evaluaValor(str(request.form.get('opt-'+str(i+1)+'-'+str((k+1)*int(arrayBoundy[j])))))+'",'
+                dataJ = dataJ + '"text":"'+evaluaValor(str(request.form.get('text-'+str(i+1)+'-'+str((k+1)*int(arrayBoundy[j])))))+'"'
+                dataJ = dataJ+"}"
+                if (k+1)!=questPerIm:
+                    dataJ=dataJ+","
+            
+            dataJ = dataJ+stringBoundyAble
 
-    for i in range(0,topQuest):
+        dataJ = dataJ + "}]"
 
-        dataJ = dataJ +'"'+ "Classname"+str(contClass)+'":{"opt":"'
-        reqOpt = str(request.form.get('opt'+str(i+1)))
-        if reqOpt != 'None':
-            dataJ = dataJ+reqOpt
-
-        dataJ=dataJ+'","text":"'+str(request.form.get('text'+str(i+1)))+'"}'
-
-        if (i+1)==(contIm*questPerIm) and (i+1)!=topQuest:
-            contIm+=1
-            contClass=1
-            #dataJ=dataJ+"}],"+'"'+obtieneNomImag(str(request.form.get('img'+str(contIm))))+'":[{"'+"Coords"+'"'+":{"+'"'+"x1"+'"'+":"+'"'+str(random.randint(100, 700))+'",'
-            #dataJ = dataJ+'"'+"y1"+'"'+":"+'"'+str(random.randint(100, 700))+'",'+'"'+"x2"+'"'+":"+'"'+str(random.randint(100, 700))+'",'+'"'+"y2"+'"'+":"+'"'+str(random.randint(100, 700))+'"},'
-            dataJ=dataJ+"}],"+'"'+obtieneNomImag(str(request.form.get('img'+str(contIm))))+'":[{"'+"Coords"+'"'+":{"+'"'+"x1"+'"'+":"+'"'+str(request.form.get('x1'+str(contIm)))+'",'
-            dataJ = dataJ+'"'+"y1"+'"'+":"+'"'+str(request.form.get('y1'+str(contIm)))+'",'+'"'+"x2"+'"'+":"+'"'+str(request.form.get('x2'+str(contIm)))+'",'+'"'+"y2"+'"'+":"+'"'+str(request.form.get('y2'+str(contIm)))+'"},'
-        else:
-            if (i+1)!=topQuest:
+        if (i+1)!=totalIm:
                 dataJ=dataJ+","
-                contClass+=1
+        
 
-
-   # for i in range(request.form.get('numberQ')):
-    #    dataJ = dataJ + request.form.get('img{i+1}')
-    
-    dataJ = dataJ+"}]}"
-    
-    #print("Es: "+dataJ)
+    dataJ = dataJ + '}'
     
     pathName = obtieneNomImag(str(request.form.get('path')))
     pathFile = "static/temp/"+pathName+".json"
@@ -239,6 +240,11 @@ def obtieneNomImag(rutIm):
     nom = rutIm[index+1:]
     
     return nom
+
+def evaluaValor(valor):
+    if valor == 'None':
+        return ""
+    return valor
 
 @app.route('/favicon.ico') 
 def favicon(): 

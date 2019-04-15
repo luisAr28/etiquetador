@@ -90,6 +90,8 @@
 			Ingresa el número de preguntas <input type="number" name="nQuest" min="1" readonly value="{{questions}}"> <br>
             <input  type='hidden' value='{{valAlet}}' name='ordAlet'>
 			Orden aleatorio <input type="checkbox" name="ordAlet" value="{{valAlet}}" {{orAlet}} onclick="return false;" value="1" disabled> <br>
+			<input  type='hidden' value='{{valBound}}' name='checkBound'>
+			Boundy Box <input type="checkbox" name="checkBound" value="{{valBound}}" {{checkBound}} onclick="return false;" value="1" disabled> <br>
 		<!--	<button type="button" name="" id="btn" value="Click">Ok </button>-->
             {% set ind = [] %}
 		{% if questions %}	
