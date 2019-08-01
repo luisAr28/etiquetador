@@ -121,7 +121,7 @@ def saveJson():
     fileName = str(request.form.get('nombre'))
     pathFile = "static/json/"+fileName+".json"
     
-    with open(pathFile, 'w') as outfile:
+    with open(pathFile, 'w',encoding="utf-8") as outfile:
         outfile.write(jsonInf)
 
     return json.dumps({'urlI':'/'})
@@ -163,6 +163,7 @@ def conForm():
     jsonInfo3 = file2.read()
     jsonInfo3 = jsonInfo3.decode('utf-8')
     jsonInfo4 = json.loads(jsonInfo3)
+    print(jsonInfo4)
     hists = os.listdir(os.path.join(app.static_folder,jsonInfo2['category1']['path']))
     sorted(hists)
     hists = [jsonInfo2['category1']['path']+'/' + file for file in hists]
