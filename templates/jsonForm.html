@@ -21,25 +21,25 @@
         $(function() {
             $('#finForm').click(function() {
 
-		        $.ajax({
-		            url: '/jsonDat',
-                    //contentType: 'application/json',
-		            //data: JSON.stringify($('form').serialize()),
-                    data : $('form').serialize(),
-                    dataType: 'json',
-		            type: 'POST',
-		            success: function(response) {
-                        //alert("JSON guardado");
-		                window.location.href = response.urlI;
-                       // alert(response.urlI+'/'+response.name)
-                        //window.location.href = response.urlI+"/"+response.name;
-		                //alert("ok");
-		            },
-		            error: function(error) {
-		                console.log(error);
-		            }
-		        });
-		    });
+            $.ajax({
+                url: '/jsonDat',
+                //contentType: 'application/json',
+                //data: JSON.stringify($('form').serialize()),
+                data : $('form').serialize(),
+                dataType: 'json',
+                type: 'POST',
+                success: function(response) {
+                    //alert("JSON guardado");
+                    window.location.href = response.urlI;
+                    // alert(response.urlI+'/'+response.name)
+                    //window.location.href = response.urlI+"/"+response.name;
+                    //alert("ok");
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+		});
 
 		});
 

@@ -15,79 +15,67 @@
         var current_fs, next_fs, previous_fs; //fieldsets
         var left, opacity, scale; //fieldset properties which we will animate
         var animating; //flag to prevent quick multi-click glitches
-        
+        var selectorCoords = 0;
         
         $(function() {          
             $('#finForm').click(function() {
-		 
-		        $.ajax({
-		            url: '/jsonDat',
-                    //contentType: 'application/json',
-		            //data: JSON.stringify($('form').serialize()),
-                    data : $('form').serialize(),
-                    dataType: 'json',
-		            type: 'POST',
-		            success: function(response) {
-                        //alert("JSON guardado");
-		                window.location.href = response.urlI;
-                       // alert(response.urlI+'/'+response.name)
-                        //window.location.href = response.urlI+"/"+response.name;
-		                //alert("ok");
-		            },
-		            error: function(error) {
-		                console.log(error);
-		            }
-		        });
-		    });
-            
+            $.ajax({
+                url: '/jsonDat',
+                data : $('form').serialize(),
+                dataType: 'json',
+                type: 'POST',
+                success: function(response) {
+                    window.location.href = response.urlI;
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+                });
+            });  
 		}); 
         
         $(function() {
-            
-            
-        $(".next").click(function(){
-  
-            
-            if(animating) return false;
-            animating = true;
+            $(".next").click(function(){
 
-            current_fs = $(this).parent();
-            next_fs = $(this).parent().next();
+                if(animating) return false;
+                animating = true;
 
-            //activate next step on progressbar using the index of next_fs
-            //$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
 
-            //show the next fieldset
-            next_fs.show(); 
-            //hide the current fieldset with style
-            current_fs.animate({opacity: 0}, {
-                step: function(now, mx) {
-                    //as the opacity of current_fs reduces to 0 - stored in "now"
-                    //1. scale current_fs down to 80%
-                    scale = 1 - (1 - now) * 0.2;
-                    //2. bring next_fs from the right(50%)
-                    left = (now * 50)+"%";
-                    //3. increase opacity of next_fs to 1 as it moves in
-                    opacity = 1 - now;
-                    current_fs.css({'transform': 'scale('+scale+')'});
-                    next_fs.css({'left': left, 'opacity': opacity});
-                }, 
-                duration: 800, 
-                complete: function(){
-                    current_fs.hide();
-                    animating = false;
-                }, 
-                //this comes from the custom easing plugin
-                easing: 'easeInOutBack'
-            });
-            
-            $('html, body').animate({scrollTop:0}, 'slow');
-        });   
+                //activate next step on progressbar using the index of next_fs
+                //$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+                //show the next fieldset
+                next_fs.show(); 
+                //hide the current fieldset with style
+                current_fs.animate({opacity: 0}, {
+                    step: function(now, mx) {
+                        //as the opacity of current_fs reduces to 0 - stored in "now"
+                        //1. scale current_fs down to 80%
+                        scale = 1 - (1 - now) * 0.2;
+                        //2. bring next_fs from the right(50%)
+                        left = (now * 50)+"%";
+                        //3. increase opacity of next_fs to 1 as it moves in
+                        opacity = 1 - now;
+                        current_fs.css({'transform': 'scale('+scale+')'});
+                        next_fs.css({'left': left, 'opacity': opacity});
+                    }, 
+                    duration: 800, 
+                    complete: function(){
+                        current_fs.hide();
+                        animating = false;
+                    }, 
+                    //this comes from the custom easing plugin
+                    easing: 'easeInOutBack'
+                });
+                
+                $('html, body').animate({scrollTop:0}, 'slow');
+            });   
         });
         
         $(function() {
-        $(".previous").click(function(){
-                      
+            $(".previous").click(function(){
                 if(animating) return false;
                 animating = true;
 
@@ -125,28 +113,28 @@
             $(".submit").click(function(){
                 return false;
             })
-            });
+        });
 
         
-            function showCoords(c)
-          {
-            $('[name=x1'+selectorCoords+']').val(c.x);
-            $('[name=y1'+selectorCoords+']').val(c.y);
-            $('[name=x2'+selectorCoords+']').val(c.x2);
-            $('[name=y2'+selectorCoords+']').val(c.y2);
-          };
+        function showCoords(c)
+            {
+                $('[name=x1'+selectorCoords+']').val(c.x);
+                $('[name=y1'+selectorCoords+']').val(c.y);
+                $('[name=x2'+selectorCoords+']').val(c.x2);
+                $('[name=y2'+selectorCoords+']').val(c.y2);
+            };
 
-          function clearCoords()
-          {
-            $('#coords'+op+' input').val('');
-          };
+        function clearCoords()
+            {
+                $('#coords'+op+' input').val('');
+            };
 
-          function crop(e){
+        function crop(e){
             console.log(e.id);
             // alert(e);
-          }
+        }
 
-          $(document).ready(function () {
+        $(document).ready(function () {
             $('img').on("mouseenter",function(){
                 op = $(this).attr('name');
                 console.log(op);
@@ -159,23 +147,23 @@
                 y2 = $('[name=y2'+selectorCoords+']')
 
                 $('#imgContainer'+op).Jcrop({
-                  allowResize: true,
-                  onChange:   showCoords,
-                  onSelect:   showCoords,
-                  onRelease:  clearCoords,
+                    allowResize: true,
+                    onChange:   showCoords,
+                    onSelect:   showCoords,
+                    onRelease:  clearCoords,
                 },function(){
-                  jcrop_api = this;
+                    jcrop_api = this;
                 });
 
                 $('#coords-'+op).on('change','input',function(e){
-                      x1 = x1.val(),
-                      x2 = x2.val(),
-                      y1 = y1.val(),
-                      y2 = y2.val();
-                  jcrop_api.setSelect([x1,y1,x2,y2]);
+                    x1 = x1.val(),
+                    x2 = x2.val(),
+                    y1 = y1.val(),
+                    y2 = y2.val();
+                    jcrop_api.setSelect([x1,y1,x2,y2]);
                 });
             });
-          });
+        });
 
         
         function editaBoundy(e,selector){
@@ -301,8 +289,19 @@
             {% set classSetCont = [] %}
             {% set coordsCont = [] %}    
             <fieldset>
-                <input type="hidden" id="lastBoundy{{rep+1}}" value="1">
-                <input type="hidden" id="contadorBoundy{{rep+1}}" name="contadorBoundy{{rep+1}}" value="1">
+                {% set qPerIm = [] %}
+                {% set stringBoundy = ''%}
+                {% set imName = hists[rep][hists[rep].rfind('/')+1:] %}
+                {% set numberBoundy = 1 %}
+                {% set stringBoundy = 'ClassSet'%}
+                {% set numberBoundy = jsonInfo4[imName][0]|length%}
+                {% set stringBoundy = [] %}
+                {% set otro = [] %}
+                {% for z in range(0,numberBoundy) %}
+                    {% if stringBoundy.append((z+1)|string) %}{%endif%}
+                {% endfor %}
+                <input type="hidden" id="lastBoundy{{rep+1}}" value="{{numberBoundy}}">
+                <input type="hidden" id="contadorBoundy{{rep+1}}" name="contadorBoundy{{rep+1}}" value="{{stringBoundy|join(',')}}">
                 <input type="hidden" name="checkBoundy" value="{{y['boundy']}}"> 
                 <div class="contadorQ">{{rep+1}} de {{numberQ}}</div>
                 <div id="imgContainer{{rep+1}}">
@@ -311,15 +310,6 @@
                 <input type="hidden" name="img{{rep+1}}" value="{{hists[rep]}}">
                 <div id="contenedor{{rep+1}}">
                 
-                {% set qPerIm = [] %}
-                {% set stringBoundy = ''%}
-                {% set imName = hists[rep][hists[rep].rfind('/')+1:] %}
-                {% set numberBoundy = 1 %}
-                {% set stringBoundy = 'ClassSet'%}
-                {% set numberBoundy = jsonInfo4[imName][0]|length%}
-                {% set otro = [] %}
-                NUMERO BOUNDY
-                {{numberBoundy}}
                 {%for i,j in jsonInfo4[imName][0].items()%}
                     {% set namesClas = [] %} 
                     <div id="formulario-{{rep+1}}-{{classSetCont|count+1}}" name="formulario-{{rep+1}}-1">
@@ -327,7 +317,6 @@
                         
                         
                         {%if y['boundy']=='1' %}
-                            SIEMPRE ENTRA
                             {%if k == 'Coords'%}
                                 {% if coordsCont.append('1') %}{% endif %}  
                                     <div id="coords{{rep+1}}" name="coords-{{rep+1}}-1">
@@ -355,12 +344,7 @@
                                 {{y['tags']['classname1']['type']}}
                                     
                                 {% if indQuest.append('1') %}{% endif %}
-                                    <!-- <div id="name">{{ b }}</div>-->
-                                    <p>
-                                    perIM {{ otro|length }}
-                                    SETTER {{setterCont}}- 
-                                    CLASS {{clasCont}} --
-                                    NAMES {{namesCont}} --</p>
+                                    
                                     <h3>{{y['tags']['classname'+namesCont|string]['question']}}</h3>
                                     {% if y['tags']['classname'+namesCont|string]['type'] == 'radio' %}
                                         {% for t in y['tags']['classname'+namesCont|string]['opt'] %}
@@ -403,13 +387,7 @@
                                     {% endif %}
                                 {% if namesClas.append('1') %}{% endif %}
                             {%endif%}
-                                {%for p in h.items()%}
-                                    
-                                {%endfor%}
                         {%else%}
-                            Data:
-                            {{j}}
-                            =====
                             {% for a,b in y['tags'].items() %}
                                 {% if qPerIm.append('1') %}{% endif %}
                                 es {{qPerIm|count}}
@@ -484,7 +462,7 @@
                 <input type="hidden" id="lastInputId{{rep+1}}" value="{{classSetCont|count-1}}">
                 <br>
                 {%if y['boundy'] == '1'%}
-                <input type="button" id="{{rep+1}}" value="Agregar Boundy Box" onclick="agregaBoundy(this,{{rep+1}})"> <br><br><br>
+                <input type="button" id="{{numberBoundy}}" value="Agregar Boundy Box" onclick="agregaBoundy(this,{{rep+1}})"> <br><br><br>
                 {% endif %}
                 {% if rep == numberQ-1 %}
 

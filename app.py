@@ -1,5 +1,5 @@
 import os
-import random
+import random, collections
 from flask import Flask, render_template,jsonify,request,redirect,url_for,json,Response,send_file,send_from_directory
 from datetime import datetime
 from werkzeug.datastructures import ImmutableMultiDict
@@ -162,7 +162,7 @@ def conForm():
     
     jsonInfo3 = file2.read()
     jsonInfo3 = jsonInfo3.decode('utf-8')
-    jsonInfo4 = json.loads(jsonInfo3)
+    jsonInfo4 = json.loads(jsonInfo3, object_pairs_hook=collections.OrderedDict)
     print(jsonInfo4)
     hists = os.listdir(os.path.join(app.static_folder,jsonInfo2['category1']['path']))
     sorted(hists)
