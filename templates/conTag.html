@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
     <title>Etiquetado</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='css/jsonCreate.css') }}" rel="stylesheet" type= "text/css">
 </head>
     <body>
-        <form method="POST" action="conForm" enctype="multipart/form-data">
+        <form method="POST" action="conForm" enctype="multipart/form-data" class="continueForm">
             Cargar JSON original <input type="file" id="fileinput" name="fileJson"/> <br><br><br>
             Cargar JSON etiqueado <input type="file" id="fileinput" name="contJson"/> 
-            <input type="submit" id="loadJ" value="OK">
+            <input type="submit" id="loadJ" value="OK" class="btn btn-primary">
         </form>
     </body>
 </html>

@@ -1,0 +1,26 @@
+body{
+    background-image: url('../images/desk4.jpg');
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color:white;
+    display: flex;
+    justify-content: center;
+}
+
+form > input, select{
+    margin-top:10px;
+}
+
+form{
+    padding: 20px 20px;
+    background-color: rgba(0,0,0,0.4);
+    width: auto;
+    display: inline-block;
+}
+
+.continueForm{
+    margin: 0 0 0 0;
+}
